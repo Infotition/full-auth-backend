@@ -1,0 +1,6 @@
+# Dependencies
+node_modules
+Dockerfile
+
+# Temporary
+dist

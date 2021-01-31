@@ -1,0 +1,8 @@
+# Testing, Coverage
+coverage
+dist
+
+# Dependencies
+package.json
+package-lock.json
+

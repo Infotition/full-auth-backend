@@ -1,0 +1,13 @@
+# Dependencies
+node_modules
+
+# Testing, Coverage
+coverage
+
+# Secruity
+
+# Temporary
+dist
+
+# Development
+.todo

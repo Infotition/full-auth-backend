@@ -1,0 +1,33 @@
+{
+  "name": "full-auth-app",
+  "version": "1.0.0",
+  "description": "The backend of a JWT authentification application Google, Facebook and Github support.",
+  "main": "index.js",
+  "scripts": {
+    "parse": "tsc",
+    "start": "npm run parse&& cd ./dist/&& cross-env NODE_ENV=prod node index.js",
+    "devStart": "npm run parse&& cd ./dist/&& cross-env NODE_ENV=dev node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Infotition/full-auth-backend.git"
+  },
+  "author": "Infotition",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@types/node": "^14.14.22",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.18.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
+  }
+}

@@ -1,0 +1,13 @@
+# Dependencies
+**/node_modules
+
+# Testing, Coverage
+**/coverage
+
+# Development
+**/dist
+**/.vscode
+**/.github
+
+# Temporary
+tmp

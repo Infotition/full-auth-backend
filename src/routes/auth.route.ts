@@ -9,6 +9,7 @@ import auth from '../middlewares/auth.middleware';
 //* Controllers
 import {
   registerController,
+  verifyController,
   loginController,
   informationController,
 } from '../controllers/auth.controller';
@@ -32,6 +33,16 @@ const authRouter: Router = express.Router();
  * @param {callback} callback - Express callback.
  */
 authRouter.post('/register', validRegister, registerController);
+
+/**
+ * Route to verify the provided email.
+ * @name get/api/auth/user/activate
+ * @access public
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} callback - Express callback.
+ */
+authRouter.get('/activate/:token', verifyController);
 
 /**
  * Route to authenticate an existing user.

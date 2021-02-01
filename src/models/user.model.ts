@@ -31,6 +31,7 @@ export interface IUser extends Document {
   password: string;
   firstName: string;
   lastName: string;
+  verified: boolean;
   gender?: Gender;
   avatar?: string;
 }
@@ -42,6 +43,7 @@ const UserSchema: Schema = new Schema(
     password: { type: String, required: true, minlength: 6, trim: true },
     firstName: { type: String, required: true, trim: true },
     lastName: { type: String, required: true, trim: true },
+    verified: { type: Boolean, required: true, default: false },
     gender: { type: String, enum: Object.values(Gender) },
     avatar: { type: String, trim: true },
   },

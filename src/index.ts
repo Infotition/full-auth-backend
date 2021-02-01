@@ -10,7 +10,7 @@ import authRouter from './routes/auth.route';
 //* ------------------ CONFIGURATION ------------------ *\\
 
 require('dotenv').config({
-  path: '../config/index.env',
+  path: './config/index.env',
 });
 
 const PROTOCOL: string = process.env.PROTOCOL || 'http';

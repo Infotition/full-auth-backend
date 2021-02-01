@@ -4,8 +4,8 @@
   "description": "The backend of a JWT authentification application Google, Facebook and Github support.",
   "main": "src/index.ts",
   "scripts": {
-    "tsc": "tsc",
     "clean": "rimraf dist",
+    "tsc": "npm run clean&& tsc&& cd src&& copyfiles config/** ../dist",
     "dev": "npm run tsc&& cd ./dist/&& cross-env NODE_ENV=dev node index.js",
     "lint": "eslint src/**/*.ts",
     "start": "npm run tsc&& cd ./dist/&& cross-env NODE_ENV=prod node index.js",
@@ -36,6 +36,7 @@
     "@types/node": "^14.14.22",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",

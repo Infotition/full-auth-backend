@@ -39,11 +39,14 @@ function auth(req: Request, res: Response, next: Function) {
     (<any>req).user = decoded.user;
     return next();
   } catch (error) {
-    console.error('an error occured in auth middleware: ', error);
-    return res
-      .status(500)
-      .json({ success: false, message: 'internal server error' });
+    return res.status(400).json({
+      success: false,
+      message: 'errors occured while authentification',
+      errors: ['invalid access token'],
+    });
   }
 }
+
+//* --------------------- EXPORTS --------------------- *\\
 
 export default auth;

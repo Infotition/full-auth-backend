@@ -29,5 +29,6 @@ function signWebToken(payload: IPayload, expiresIn: number): string {
   //* Sign the payload into JSON web token
   return jwt.sign(payload, process.env.JWT_SECRET || '', { expiresIn });
 }
+//* --------------------- EXPORTS --------------------- *\\
 
 export default signWebToken;

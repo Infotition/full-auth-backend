@@ -17,10 +17,17 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "import/extensions": 0,
+    // Express router path
     "import/no-unresolved": 0,
+    "import/extensions": 0,
+
+    // Development
     "no-console": 0,
-    "no-param-reassign": 0,
-    "import/no-extraneous-dependencies" : 0
+
+    // Typescript Classes / Enum rules
+    "no-shadow": 0,
+    "@typescript-eslint/no-shadow": ["error"],
+    "@typescript-eslint/no-unused-vars": "error"
+
   }
 }

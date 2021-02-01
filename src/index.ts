@@ -4,14 +4,15 @@
 import express, { Request, Response, Application } from 'express';
 import mongoose from 'mongoose';
 
+import dotenv from 'dotenv';
+
+dotenv.config({ path: './config/index.env' });
+
 //* Routes
 import authRouter from './routes/auth.route';
+import mailRouter from './routes/mail.route';
 
 //* ------------------ CONFIGURATION ------------------ *\\
-
-require('dotenv').config({
-  path: './config/index.env',
-});
 
 const PROTOCOL: string = process.env.PROTOCOL || 'http';
 const HOST: string = process.env.HOST || 'localhost';
@@ -43,6 +44,9 @@ mongoose
 
 //* User Authentification routes
 app.use('/api/auth/user', authRouter);
+
+//* Google mail routes
+app.use('/api/mail', mailRouter);
 
 //* Homepage route
 app.get('/', (_req: Request, res: Response) =>

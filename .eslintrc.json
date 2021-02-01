@@ -27,7 +27,8 @@
     // Typescript Classes / Enum rules
     "no-shadow": 0,
     "@typescript-eslint/no-shadow": ["error"],
-    "@typescript-eslint/no-unused-vars": "error"
+    "@typescript-eslint/no-unused-vars": "error",
 
+    "import/first": 0
   }
 }

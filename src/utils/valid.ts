@@ -3,7 +3,7 @@
 //* Node modules
 import { check } from 'express-validator';
 
-//* ---------------------- Valid ---------------------- *\\
+//* ---------------- Auth Valdidations ---------------- *\\
 const validRegister = [
   check('email', 'email field is required')
     .notEmpty()
@@ -48,6 +48,22 @@ const validLogin = [
   check('email', 'please include a valid email').isEmail().not(),
 ];
 
+//* ---------------- Mail Valdidations ---------------- *\\
+const validMail = [
+  check('to', 'to field is required').notEmpty(),
+  check('subject', 'subject field is required').notEmpty(),
+  check('html', 'html field is required').notEmpty(),
+
+  check('to', 'to cant be longer than 24 characters').isLength({
+    max: 24,
+  }),
+  check('subject', 'subject cant be longer than 64 characters').isLength({
+    max: 64,
+  }),
+
+  check('to', 'to must be a valid email').isEmail().not(),
+];
+
 //* --------------------- EXPORTS --------------------- *\\
 
-export { validRegister, validLogin };
+export { validRegister, validLogin, validMail };

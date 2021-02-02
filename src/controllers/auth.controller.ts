@@ -11,8 +11,16 @@ import jwt from 'jsonwebtoken';
 import signWebToken, { IPayload } from '../utils/signWebToken';
 import sendMail from '../utils/sendMail';
 
+//* View imports
+import getPasswordResetView from '../views/passwordReset';
+import getWelcomeView from '../views/welcome';
+
 //* Mongo DB Models
 import User, { IUser } from '../models/user.model';
+
+//* ------------------ CONFIGURATION ------------------ *\\
+
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5000';
 
 //* ------------------- Controllers ------------------- *\\
 
@@ -79,15 +87,18 @@ async function registerController(req: Request, res: Response) {
     const token = signWebToken({ user: { id: user.id } }, 36000);
 
     //* Send verification e-mail to users email
-    const PROTOCOL: string = process.env.PROTOCOL || 'http';
-    const HOST: string = process.env.HOST || 'localhost';
-    const PORT: string = process.env.PORT || '3000';
-    const CLIENT_URL = `${PROTOCOL}://${HOST}:${PORT}`;
-    const emailData = `
-      <h1>Please use the following link to activate your account</h1>
-      <p>${CLIENT_URL}/api/auth/user/activate/${token}</p>
-    `;
-    sendMail(email, 'Verify your Infotition account', emailData, () => {});
+    const emailData = getWelcomeView(
+      firstName,
+      email,
+      `${CLIENT_URL}/activate/${token}`
+    );
+
+    sendMail(
+      email,
+      '[Infotition-Account] Erfolgreich registriert',
+      emailData,
+      () => {}
+    );
 
     return res.status(400).json({
       success: true,
@@ -99,48 +110,6 @@ async function registerController(req: Request, res: Response) {
     return res
       .status(500)
       .json({ success: false, message: 'internal server error' });
-  }
-}
-
-/**
- * Verifies the email of the user.
- *
- * @param {Request} req
- * @param {Response} res
- * @return {void}
- */
-async function verifyController(req: Request, res: Response) {
-  //* Get the token from request parameters
-  const { token } = req.params;
-
-  //* If no token exists, send user not authentificated
-  if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: 'errors occured while activation',
-      errors: ['no token', 'not authorized'],
-    });
-  }
-
-  try {
-    //* Verify and Decode the jwt token
-    const decoded: IPayload = <IPayload>(
-      jwt.verify(token, process.env.JWT_SECRET || '')
-    );
-
-    //* Find user by id and update the verified status
-    await User.findOneAndUpdate({ id: decoded.user.id }, { verified: true });
-
-    return res.status(401).json({
-      success: true,
-      message: 'succesfully verified email',
-    });
-  } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: 'errors occured while activating',
-      errors: ['invalid access token'],
-    });
   }
 }
 
@@ -209,6 +178,163 @@ async function loginController(req: Request, res: Response) {
 }
 
 /**
+ * Verifies the email of the user.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @return {void}
+ */
+async function verifyController(req: Request, res: Response) {
+  //* Get the token from request parameters
+  const { token } = req.body;
+
+  //* If no token exists, send user not authentificated
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: 'errors occured while activation',
+      errors: ['no token', 'not authorized'],
+    });
+  }
+
+  try {
+    //* Verify and Decode the jwt token
+    const decoded: IPayload = <IPayload>(
+      jwt.verify(token, process.env.JWT_SECRET || '')
+    );
+
+    //* Find user by id and update the verified status
+    await User.findOneAndUpdate({ _id: decoded.user.id }, { verified: true });
+
+    return res.status(401).json({
+      success: true,
+      message: 'succesfully verified email',
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: 'errors occured while activating',
+      errors: ['invalid access token'],
+    });
+  }
+}
+
+/**
+ * Sends the user an email to reset his password.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @return {void}
+ */
+async function forgotPasswordController(req: Request, res: Response) {
+  //* Validate integrity constraints
+  const errors: Result<ValidationError> = validationResult(req);
+
+  //* If errors occured, stop register route and send errors
+  if (!validationResult(req).isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: 'request body was incomplete',
+      errors: errors.array(),
+    });
+  }
+
+  //* Read needed fields from body
+  const { email } = req.body;
+
+  try {
+    //* Search user by email in database
+    const user: IUser | null = await User.findOne({ email });
+
+    //* If user exists send reset email to him
+    if (user) {
+      //* Sign a new json web token
+      const token = signWebToken({ user: { id: user.id } }, 600);
+
+      //* Send reset e-mail to users email
+      const emailData = getPasswordResetView(
+        user.firstName,
+        `${CLIENT_URL}/password/reset/${token}`,
+        '-',
+        '-'
+      );
+
+      sendMail(
+        email,
+        '[Infotition-Account] Änderung des Passworts',
+        emailData,
+        () => {}
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'password reset sent to the user if it exists',
+    });
+  } catch (error) {
+    console.error('an error occured in register route: ', error);
+    return res
+      .status(500)
+      .json({ success: false, message: 'internal server error' });
+  }
+}
+
+/**
+ * Resets the user password.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @return {void}
+ */
+async function resetPasswordController(req: Request, res: Response) {
+  //* Validate integrity constraints
+  const errors: Result<ValidationError> = validationResult(req);
+
+  //* If errors occured, stop register route and send errors
+  if (!validationResult(req).isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: 'request body was incomplete',
+      errors: errors.array(),
+    });
+  }
+
+  //* Read needed fields from body
+  const { token, newPassword } = req.body;
+
+  try {
+    //* Verify and Decode the jwt token
+    const decoded: IPayload = <IPayload>(
+      jwt.verify(token, process.env.JWT_SECRET || '')
+    );
+
+    //* Find user by id and update the verified status
+    const user = await User.findById(decoded.user.id);
+
+    //* If user exists reset the password
+    if (user) {
+      const hash = await bcrypt.hash(newPassword, await bcrypt.genSalt(10));
+      await User.updateOne({ _id: user.id }, { password: hash });
+
+      return res.status(200).json({
+        success: true,
+        message: 'password reset was successfull',
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: 'password reset failed',
+    });
+  } catch (error) {
+    console.error('an error occured in register route: ', error);
+    return res
+      .status(500)
+      .json({ success: false, message: 'internal server error' });
+  }
+}
+
+/**
  * Get the information of an authenticated user.
  *
  * @param {Request} req
@@ -239,7 +365,9 @@ async function informationController(req: Request, res: Response) {
 
 export {
   registerController,
-  verifyController,
   loginController,
+  verifyController,
+  forgotPasswordController,
+  resetPasswordController,
   informationController,
 };

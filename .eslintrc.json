@@ -15,7 +15,7 @@
   "parserOptions": {
     "ecmaVersion": 12
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "html"],
   "rules": {
     // Express router path
     "import/no-unresolved": 0,

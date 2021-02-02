@@ -11,11 +11,19 @@ import {
   registerController,
   verifyController,
   loginController,
+  resetPasswordController,
+  forgotPasswordController,
   informationController,
 } from '../controllers/auth.controller';
 
 //* Utils import
-import { validRegister, validLogin } from '../utils/valid';
+import {
+  validRegister,
+  validLogin,
+  validActivate,
+  validResetPassword,
+  validForgotPassword,
+} from '../utils/valid';
 
 //* ------------------ CONFIGURATION ------------------ *\\
 
@@ -35,16 +43,6 @@ const authRouter: Router = express.Router();
 authRouter.post('/register', validRegister, registerController);
 
 /**
- * Route to verify the provided email.
- * @name get/api/auth/user/activate
- * @access public
- * @function
- * @param {string} path - Express path
- * @param {callback} callback - Express callback.
- */
-authRouter.get('/activate/:token', verifyController);
-
-/**
  * Route to authenticate an existing user.
  * @name post/api/auth/user/login
  * @access public
@@ -54,6 +52,39 @@ authRouter.get('/activate/:token', verifyController);
  * @param {callback} callback - Express callback.
  */
 authRouter.post('/login', validLogin, loginController);
+
+/**
+ * Route to verify the provided email.
+ * @name post/api/auth/user/activate
+ * @access public
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ * @param {callback} callback - Express callback.
+ */
+authRouter.post('/activate', validActivate, verifyController);
+
+/**
+ * Route to reset the user password.
+ * @name post/api/auth/user/reset
+ * @access public
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ * @param {callback} callback - Express callback.
+ */
+authRouter.post('/forgot', validForgotPassword, forgotPasswordController);
+
+/**
+ * Route to reset the user password.
+ * @name post/api/auth/user/reset
+ * @access public
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ * @param {callback} callback - Express callback.
+ */
+authRouter.post('/reset', validResetPassword, resetPasswordController);
 
 /**
  * Route to get the user information of the authenticated user.

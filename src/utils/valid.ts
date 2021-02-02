@@ -48,6 +48,28 @@ const validLogin = [
   check('email', 'please include a valid email').isEmail().not(),
 ];
 
+const validActivate = [check('token', 'token field is required').notEmpty()];
+
+const validForgotPassword = [
+  check('email', 'email field is required').notEmpty(),
+
+  check('email', 'email cant be longer than 24 characters').isLength({
+    max: 24,
+  }),
+
+  check('email', 'please include a valid email').isEmail().not(),
+];
+
+const validResetPassword = [
+  check('token', 'token field is required').notEmpty(),
+  check('password', 'password field is required').notEmpty(),
+
+  check(
+    'password',
+    'please enter a password with 6 to 32 characters'
+  ).isLength({ min: 6, max: 32 }),
+];
+
 //* ---------------- Mail Valdidations ---------------- *\\
 const validMail = [
   check('to', 'to field is required').notEmpty(),
@@ -66,4 +88,11 @@ const validMail = [
 
 //* --------------------- EXPORTS --------------------- *\\
 
-export { validRegister, validLogin, validMail };
+export {
+  validRegister,
+  validLogin,
+  validActivate,
+  validForgotPassword,
+  validResetPassword,
+  validMail,
+};

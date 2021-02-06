@@ -1,6 +1,31 @@
-# Dependencies
+# dependencies
 node_modules
-Dockerfile
 
-# Temporary
+# Testing, Coverage
+coverage
+
+# compiled output
 dist
+tmp
+out-tsc
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Misc
+.sass-cache
+connect.lock
+libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+typings
+
+# System Files
+.DS_Store
+Thumbs.db

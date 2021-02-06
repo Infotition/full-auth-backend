@@ -4,9 +4,6 @@ node_modules
 # Testing, Coverage
 coverage
 
-# Secruity
-*.env
-
 # Compiled output
 dist
 tmp

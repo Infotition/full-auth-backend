@@ -1,15 +1,18 @@
 {
   "name": "full-auth-app",
   "version": "1.0.0",
-  "description": "The backend of a JWT authentification application Google, Facebook and Github support.",
-  "main": "src/index.ts",
+  "description": "Fullstack JWT authentification application with Google, Facebook and Github support.",
+  "main": "index.js",
   "scripts": {
-    "clean": "rimraf dist",
-    "tsc": "npm run clean&& tsc&& cd src/server&& copyfiles config/** ../../dist/server",
-    "dev": "npm run tsc&& cd ./dist/server&& cross-env NODE_ENV=dev node index.js",
-    "lint": "eslint src/server/**/*.ts",
-    "start": "npm run tsc&& cd ./dist/server&& cross-env NODE_ENV=prod node index.js",
-    "build": "npm-run-all clean lint tsc start"
+    "server:clean": "cd app/server&& npm run clean",
+    "server:tsc": "cd app/server&& npm run tsc",
+    "server:start": "cd app/server&& npm start",
+    "server:lint": "cd app/server&& npm run lint",
+    "server:build": "cd app/server&& npm build",
+
+    "client:start": "cd app/client&& npm start",
+    "client:lint": "cd app/client&& npm run lint",
+    "client:build": "cd app/client&& npm build"
   },
   "repository": {
     "type": "git",
@@ -17,6 +20,10 @@
   },
   "author": "Infotition",
   "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Infotition/full-auth-backend/issues"
+  },
+  "homepage": "https://github.com/Infotition/full-auth-backend#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
@@ -26,7 +33,19 @@
     "gravatar": "^1.8.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.14",
-    "nodemailer": "^6.4.17"
+    "nodemailer": "^6.4.17",
+
+    "@angular/animations": "~11.0.9",
+    "@angular/common": "~11.0.9",
+    "@angular/compiler": "~11.0.9",
+    "@angular/core": "~11.0.9",
+    "@angular/forms": "~11.0.9",
+    "@angular/platform-browser": "~11.0.9",
+    "@angular/platform-browser-dynamic": "~11.0.9",
+    "@angular/router": "~11.0.9",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.0.0",
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -50,6 +69,28 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.1.3"
+    "typescript": "^4.1.3",
+
+    "@angular-devkit/build-angular": "~0.1100.7",
+    "@angular-eslint/builder": "1.1.0",
+    "@angular-eslint/eslint-plugin": "1.1.0",
+    "@angular-eslint/eslint-plugin-template": "1.1.0",
+    "@angular-eslint/schematics": "1.1.0",
+    "@angular-eslint/template-parser": "1.1.0",
+    "@angular/cli": "~11.0.7",
+    "@angular/compiler-cli": "~11.0.9",
+    "@types/jasmine": "~3.6.0",
+
+    "eslint-plugin-jsdoc": "30.7.6",
+    "eslint-plugin-prefer-arrow": "1.2.2",
+    "jasmine-core": "~3.6.0",
+    "jasmine-spec-reporter": "~5.0.0",
+    "karma": "~5.1.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.0.3",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "^1.5.0",
+    "protractor": "~7.0.0",
+    "ts-node": "~8.3.0"
   }
 }

@@ -5,10 +5,10 @@
   "main": "src/index.ts",
   "scripts": {
     "clean": "rimraf dist",
-    "tsc": "npm run clean&& tsc&& cd src&& copyfiles config/** ../dist",
-    "dev": "npm run tsc&& cd ./dist/&& cross-env NODE_ENV=dev node index.js",
-    "lint": "eslint src/**/*.ts",
-    "start": "npm run tsc&& cd ./dist/&& cross-env NODE_ENV=prod node index.js",
+    "tsc": "npm run clean&& tsc&& cd src/server&& copyfiles config/** ../../dist/server",
+    "dev": "npm run tsc&& cd ./dist/server&& cross-env NODE_ENV=dev node index.js",
+    "lint": "eslint src/server/**/*.ts",
+    "start": "npm run tsc&& cd ./dist/server&& cross-env NODE_ENV=prod node index.js",
     "build": "npm-run-all clean lint tsc start"
   },
   "repository": {
